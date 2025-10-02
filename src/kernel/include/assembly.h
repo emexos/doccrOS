@@ -1,9 +1,11 @@
+#ifndef ASSEMBLY_H
+#define ASSEMBLY_H
+
+#include "../../../shared/types.h"
+#include "../../../third_party/limine/limine.h"
 
 
-//NULL standart
-#define NULL ((void*)0)
-
-// Limine Requests
+// limine reqs
 __attribute__((used, section(".requests")))
 static volatile LIMINE_BASE_REVISION(3);
 
@@ -13,19 +15,23 @@ static volatile struct limine_framebuffer_request framebuffer_request = {
     .revision = 0
 };
 
-// Halt
-static void hcf(void)
+// halt
+static inline void hcf(void)
 {
     for (;;) {
         __asm__ volatile ("hlt");
     }
 }
 
-// Simple delay function
-static void delay(uint32_t count)
+// simple delay
+static inline void delay(u32 count)
 {
-    for (volatile uint32_t i = 0; i < count * 10000000; i++)
+    for (volatile u32 i = 0; i < count * 10000000; i++)
     {
         __asm__ volatile ("nop");
     }
+    //maybe i add apic and timer later
 }
+
+
+#endif

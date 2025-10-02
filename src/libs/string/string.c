@@ -1,8 +1,6 @@
 #include "string.h"
 #include "../graphics/graphics.h"
 
-#define NULL ((void*)0)
-
 void str_copy(char *dest, const char *src)
 {
     int i = 0;
@@ -32,7 +30,7 @@ void str_append(char *dest, const char *src)
     dest[i] = '\0';
 }
 
-void str_append_uint(char *dest, unsigned int num)
+void str_append_uint(char *dest, u32 num)
 {
     char buf[20];
     int i = 0;
@@ -43,7 +41,7 @@ void str_append_uint(char *dest, unsigned int num)
     }
     else
     {
-        unsigned int temp = num;
+        u32 temp = num;
         int digits = 0;
         while (temp > 0)
         {
@@ -74,7 +72,7 @@ int str_len(const char *str)
     return len;
 }
 
-void print_str(const char *str, unsigned int color)
+void print_str(const char *str, u32 color)
 {
     string(str, color);
     putchar('\n', color);

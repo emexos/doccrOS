@@ -1,16 +1,13 @@
-#include <stdint.h>
+#include "../../../../shared/types.h"
 #include "../graphics.h"
+//#include "../draw.h"
 
-void clear(uint32_t color)
+void clear(u32 color)
 {
-    uint32_t *fb = get_framebuffer();
-    uint32_t width = get_fb_width();
-    uint32_t height = get_fb_height();
+    u32 w = get_fb_width();
+    u32 h = get_fb_height();
 
-    for (uint32_t i = 0; i < width * height; i++)
-    {
-        fb[i] = color;
-    }
+    draw_rect(0, 0, w, h, color);
+
     reset_cursor();
-    //
 }
