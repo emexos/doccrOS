@@ -1,6 +1,8 @@
 #include "../../../../shared/types.h"
 #include "../graphics.h"
+#include "../colors/stdclrs.h"
 //#include "../draw.h"
+#include "../../print/print.h"
 
 void clear(u32 color)
 {
@@ -10,4 +12,5 @@ void clear(u32 color)
     draw_rect(0, 0, w, h, color);
 
     reset_cursor();
+    print(" ", GFX_BG);
 }

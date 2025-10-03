@@ -16,9 +16,6 @@ extern u32 cursor_y;
 
 void graphics_init(struct limine_framebuffer *fb);
 void putpixel(u32 x, u32 y, u32 color);
-void putchar(char c, u32 color);
-void string(const char *str, u32 color);
-void print(const char *str, u32 color);
 
 u32 get_fb_width(void);
 u32 get_fb_height(void);

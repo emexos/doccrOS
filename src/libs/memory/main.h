@@ -3,21 +3,25 @@
 
 #include "../../../shared/types.h"
 
-// mem ops
+// basic memory operations (alloc.c)
 void memset(void *ptr, u8 val, size_t n);
 void memcpy(void *dst, const void *src, size_t n);
 void memmove(void *dst, const void *src, size_t n);
 int memcmp(const void *a, const void *b, size_t n);
 
-// heap
+// heap initialization (mem.c)
 void mem_init(void *heap_start, size_t heap_sz);
+
+// heap allocation (heap.c)
 void *kalloc(size_t sz);
 void kfree(void *ptr);
 void *krealloc(void *ptr, size_t new_sz);
 
-// debug/test
-void mem_test(void);
+// memory info (mem.c)
 size_t mem_get_free(void);
 size_t mem_get_used(void);
+
+// testing (test.c)
+void mem_test(void);
 
 #endif

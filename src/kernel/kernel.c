@@ -4,9 +4,13 @@
 //#include "../libs/graphics/draw.h"
 #include "../libs/graphics/colors/stdclrs.h"
 #include "../libs/string/string.h"
-#include "../libs/memory/main.h"
+#include "../libs/print/print.h"
 
-#include "../drivers/ps2/keyboard/keyboard.h"
+#include "../libs/memory/main.h"
+#include "../drivers/ps2/ps2.h"
+#include "console/console.h"
+
+//#include "../drivers/ps2/keyboard/keyboard.h"
 
 // 16MB heap
 #define HEAP_SIZE (8 * 1024 * 1024)
@@ -14,7 +18,7 @@ static u8 kernel_heap[HEAP_SIZE] __attribute__((aligned(16)));
 
 void main(void)
 {
-    // emexOS
+    // doccrOS
 
     //delay(30);
 
@@ -49,6 +53,16 @@ void main(void)
     draw_circle(200, 380, 30, GFX_YELLOW);
     draw_line(300, 360, 400, 400, GFX_PURPLE);
 
+    putchar('\n', GFX_WHITE);
+    putchar('\n', GFX_WHITE);
+
+    //delay(10);
+
+    clear(GFX_BG);
+    reset_cursor();
+
+    console_init();
+
     keyboard_poll();
 
     hcf();
@@ -76,7 +90,7 @@ void _start(void)
 
     mem_init(kernel_heap, HEAP_SIZE);
 
-    delay(30);
+    //delay(15);
 
     main();
     // hcf(); cannot ever reach this

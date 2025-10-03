@@ -2,6 +2,7 @@
 #include "../../../libs/graphics/graphics.h"
 #include "../../../libs/graphics/colors/stdclrs.h"
 #include "../../../libs/string/string.h"
+#include "../../../kernel/console/console.h"
 
 static inline u8 inb(u16 port) {
     u8 ret;
@@ -45,6 +46,8 @@ static const unsigned char scancode_to_ascii_shift[128] = {
     [0x37]='*',[0x38]=0,[0x39]=' ',[0x3A]=0
 };
 
+//TODO: add a language support
+
 void keyboard_poll(void) {
     int shift = 0;
     int caps = 0;
@@ -60,15 +63,15 @@ void keyboard_poll(void) {
         if (sc == 0x2A || sc == 0x36) { shift = 1; continue; }
         if (sc == 0x3A) { caps = !caps; continue; }
         //if (sc == 0x0E) { putchar('\b', GFX_WHITE); continue; } // fix DEL
-        if (sc == 0x0E) { continue; }
+        if (sc == 0x0E) {console_handle_key('\b'); continue; }
 
-        if (sc == 0x1C) { putchar('\n', GFX_WHITE); continue; }
+        if (sc == 0x1C) { console_handle_key('\n'); continue; }
         if (sc < 128) {
             unsigned char c = shift ? scancode_to_ascii_shift[sc] : scancode_to_ascii[sc];
             if (c >= 'a' && c <= 'z') {
                 if ((caps && !shift) || (!caps && shift)) c = (c - 'a') + 'A';
             }
-            if (c) putchar((char)c, GFX_WHITE);
+            if (c) console_handle_key((char)c);;
         }
 
     }

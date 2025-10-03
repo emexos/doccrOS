@@ -3,6 +3,6 @@
 
 #include "../../../../shared/types.h"
 
-void keyboard_poll(void);
+//void keyboard_poll(void);
 
 #endif
