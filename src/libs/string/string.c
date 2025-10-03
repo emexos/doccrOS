@@ -1,5 +1,5 @@
 #include "string.h"
-#include "../graphics/graphics.h"
+#include "../print/print.h"
 
 void str_copy(char *dest, const char *src)
 {

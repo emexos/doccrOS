@@ -17,6 +17,7 @@ KERNEL_SRC = src/kernel/kernel.c \
 			 src/kernel/console/shell_screen.c \
 			 src/kernel/console/functions/text.c \
 			 src/kernel/console/functions/system.c \
+			 src/kernel/include/logo.c \
              src/libs/graphics/graphics.c \
              src/libs/graphics/standard/screen.c \
              src/libs/graphics/draw.c \
@@ -26,7 +27,10 @@ KERNEL_SRC = src/kernel/kernel.c \
              src/libs/memory/alloc.c \
              src/libs/memory/mem.c \
              src/libs/memory/test.c \
-             src/drivers/ps2/keyboard/keyboard.c
+             src/userspace/userspace.c \
+             src/userspace/window/window.c \
+             src/drivers/ps2/keyboard/keyboard.c \
+             src/drivers/ps2/mouse/mouse.c
 
 KERNEL_OBJ = $(patsubst src/%.c,build/%.o,$(KERNEL_SRC))
 KERNEL = kernel.elf

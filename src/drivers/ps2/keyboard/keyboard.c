@@ -1,8 +1,4 @@
 #include "keyboard.h"
-#include "../../../libs/graphics/graphics.h"
-#include "../../../libs/graphics/colors/stdclrs.h"
-#include "../../../libs/string/string.h"
-#include "../../../kernel/console/console.h"
 
 static inline u8 inb(u16 port) {
     u8 ret;
@@ -48,31 +44,57 @@ static const unsigned char scancode_to_ascii_shift[128] = {
 
 //TODO: add a language support
 
-void keyboard_poll(void) {
-    int shift = 0;
-    int caps = 0;
-    while (1) {
-        if ((inb(0x64) & 1) == 0) continue;
-        unsigned char sc = inb(0x60);
-        if (sc == 0) continue;
-        if (sc & 0x80) {
-            unsigned char make = sc & 0x7F;
-            if (make == 0x2A || make == 0x36) shift = 0;
-            continue;
-        }
-        if (sc == 0x2A || sc == 0x36) { shift = 1; continue; }
-        if (sc == 0x3A) { caps = !caps; continue; }
-        //if (sc == 0x0E) { putchar('\b', GFX_WHITE); continue; } // fix DEL
-        if (sc == 0x0E) {console_handle_key('\b'); continue; }
+static key_buffer_t key_buffer;
+static int shift = 0;
+static int caps = 0;
 
-        if (sc == 0x1C) { console_handle_key('\n'); continue; }
-        if (sc < 128) {
-            unsigned char c = shift ? scancode_to_ascii_shift[sc] : scancode_to_ascii[sc];
-            if (c >= 'a' && c <= 'z') {
-                if ((caps && !shift) || (!caps && shift)) c = (c - 'a') + 'A';
-            }
-            if (c) console_handle_key((char)c);;
-        }
+void keyboard_init(void) {
+    key_buffer.read_pos = 0;
+    key_buffer.write_pos = 0;
+    shift = 0;
+    caps = 0;
+}
 
+static void keyboard_add_key(char c) {
+    int next_pos = (key_buffer.write_pos + 1) % KEY_BUFFER_SIZE;
+    if (next_pos != key_buffer.read_pos) {
+        key_buffer.buffer[key_buffer.write_pos] = c;
+        key_buffer.write_pos = next_pos;
     }
+}
+
+void keyboard_poll(void) {
+    if ((inb(0x64) & 1) == 0) return;
+
+    unsigned char sc = inb(0x60);
+    if (sc == 0) return;
+
+    if (sc & 0x80) {
+        unsigned char make = sc & 0x7F;
+        if (make == 0x2A || make == 0x36) shift = 0;
+        return;
+    }
+
+    if (sc == 0x2A || sc == 0x36) { shift = 1; return; }
+    if (sc == 0x3A) { caps = !caps; return; }
+
+    if (sc < 128) {
+        unsigned char c = shift ? scancode_to_ascii_shift[sc] : scancode_to_ascii[sc];
+        if (c >= 'a' && c <= 'z') {
+            if ((caps && !shift) || (!caps && shift)) c = (c - 'a') + 'A';
+        }
+        if (c) keyboard_add_key((char)c);
+    }
+}
+
+int keyboard_has_key(void) {
+    return key_buffer.read_pos != key_buffer.write_pos;
+}
+
+char keyboard_get_key(void) {
+    if (!keyboard_has_key()) return 0;
+
+    char c = key_buffer.buffer[key_buffer.read_pos];
+    key_buffer.read_pos = (key_buffer.read_pos + 1) % KEY_BUFFER_SIZE;
+    return c;
 }

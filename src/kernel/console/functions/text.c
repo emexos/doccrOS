@@ -2,6 +2,7 @@
 #include "../../../libs/print/print.h"
 #include "../../../libs/graphics/colors/stdclrs.h"
 #include "../../../libs/string/string.h"
+#include "../../../../shared/theme/doccr.h"
 
 FHDR(cmd_echo)
 {
@@ -15,7 +16,7 @@ FHDR(cmd_echo)
 
 FHDR(cmd_clear)
 {
-    u32 color = GFX_BG;
+    u32 color = CONSOLESCREEN_COLOR;
 
     // parse color argument if provided
     if (*s != '\0') {

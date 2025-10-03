@@ -6,6 +6,7 @@
 //#include "standard/screen.h"
 #include "../string/string.h"
 #include "../print/print.h"
+#include "../../kernel/include/logo.h"
 
 //donnot put static before the uints!
 u32 *framebuffer = NULL;
@@ -27,6 +28,9 @@ void graphics_init(struct limine_framebuffer *fb)
 
     // background rect (test)
     //draw_rect(10, 10, fb_width - 20, fb_height - 20, GFX_BG);
+
+
+    draw_logo();
 
     print("Welcome to doccrOS ", GFX_WHITE);
     print("v0.0.1 (alph)", GFX_WHITE);

@@ -4,6 +4,7 @@
 #include "../../libs/graphics/colors/stdclrs.h"
 #include "../../libs/string/string.h"
 #include "../../libs/graphics/graphics.h"
+#include "../../../shared/theme/doccr.h"
 
 static char input_buffer[MAX_INPUT_LEN];
 static int input_pos = 0;
@@ -23,7 +24,10 @@ void console_init(void)
     input_pos = 0;
     input_buffer[0] = '\0';
 
-    print(" ", GFX_WHITE); //there is a glitch where the first print is always 10px - left printed... so we just print the first line with nothing
+    clear(CONSOLESCREEN_COLOR);
+    reset_cursor();
+
+    print(" ", GFX_WHITE); //there is a glitch where the first print is always 10px left printed... so we just print the first line with nothing
     //print("console", GFX_WHITE);
 
     shell_print_prompt();
@@ -63,10 +67,7 @@ void console_handle_key(char c)
                 putchar(' ', GFX_WHITE);
                 cursor_x -= 9;
 
-                draw_rect(cursor_x, cursor_y, 9, 16, GFX_BG);
-                // this doesn't work if we change the background but i will fix it with kernel/theme/doccr.h
-                // maybe with CONSOLE_COLOR 0xFF...
-                // right now its 0xFF3B4252
+                draw_rect(cursor_x, cursor_y, 9, 16, CONSOLESCREEN_COLOR);
             }
         }
         return;
