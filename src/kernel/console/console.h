@@ -39,6 +39,8 @@ FHDR(cmd_echo);
 FHDR(cmd_clear);
 FHDR(cmd_help);
 FHDR(cmd_meminfo);
+FHDR(cmd_sysinfo);
+FHDR(cmd_date);
 
 
 #endif

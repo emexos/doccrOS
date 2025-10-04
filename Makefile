@@ -2,6 +2,7 @@
 
 CC = x86_64-elf-gcc
 LD = x86_64-elf-ld
+AS = nasm
 
 
 CFLAGS = -Wall -Wextra -std=gnu11 -ffreestanding -fno-stack-protector \
@@ -12,12 +13,26 @@ CFLAGS = -Wall -Wextra -std=gnu11 -ffreestanding -fno-stack-protector \
 LDFLAGS = -nostdlib -static -no-pie -z text -z max-page-size=0x1000 \
           -T src/kernel/linker.ld
 
+ASFLAGS = -f elf64
+
 KERNEL_SRC = src/kernel/kernel.c \
+			 src/kernel/panic.c \
 			 src/kernel/console/console.c \
 			 src/kernel/console/shell_screen.c \
 			 src/kernel/console/functions/text.c \
 			 src/kernel/console/functions/system.c \
+			 src/kernel/console/functions/cmos.c \
 			 src/kernel/include/logo.c \
+			 src/kernel/cpu/idt.c \
+             src/kernel/cpu/isr.c \
+             src/kernel/cpu/irq.c \
+             src/kernel/cpu/timer.c \
+             src/kernel/mem_manager/physmem.c \
+             src/kernel/mem_manager/virtmem.c \
+             src/kernel/mem_manager/vmalloc.c \
+             src/kernel/proc/process.c \
+             src/kernel/proc/scheduler.c \
+             src/kernel/proc/lock.c \
              src/libs/graphics/graphics.c \
              src/libs/graphics/standard/screen.c \
              src/libs/graphics/draw.c \
@@ -27,12 +42,19 @@ KERNEL_SRC = src/kernel/kernel.c \
              src/libs/memory/alloc.c \
              src/libs/memory/mem.c \
              src/libs/memory/test.c \
-             src/userspace/userspace.c \
-             src/userspace/window/window.c \
              src/drivers/ps2/keyboard/keyboard.c \
-             src/drivers/ps2/mouse/mouse.c
+             src/drivers/ps2/mouse/mouse.c \
+             src/drivers/cmos/cmos.c
 
-KERNEL_OBJ = $(patsubst src/%.c,build/%.o,$(KERNEL_SRC))
+KERNEL_ASM = src/kernel/cpu/idt.asm \
+             src/kernel/cpu/isr.asm \
+             src/kernel/cpu/irq.asm \
+             src/kernel/proc/scheduler.asm
+
+KERNEL_C_OBJ = $(patsubst src/%.c,build/%.o,$(KERNEL_SRC))
+KERNEL_ASM_OBJ = $(patsubst src/%.asm,build/%_asm.o,$(KERNEL_ASM))
+KERNEL_OBJ = $(KERNEL_C_OBJ) $(KERNEL_ASM_OBJ)
+
 KERNEL = kernel.elf
 ISO = doccrOS.iso
 
@@ -43,6 +65,11 @@ build/%.o: src/%.c
 	@mkdir -p $(dir $@)
 	@echo "Compiling $<..."
 	$(CC) $(CFLAGS) -c $< -o $@
+
+build/%_asm.o: src/%.asm
+	@mkdir -p $(dir $@)
+	@echo "Assembling $<..."
+	$(AS) $(ASFLAGS) $< -o $@
 
 $(KERNEL): $(KERNEL_OBJ)
 	@echo "Linking kernel..."
@@ -71,7 +98,6 @@ $(ISO): $(KERNEL)
 	        iso_root -o $(ISO)
 
 	@echo "ISO created > $(ISO)"
-	@echo "ISO started:"
 
 run: $(ISO)
 	qemu-system-x86_64 -cdrom $(ISO) -m 256M -enable-kvm 2>/dev/null || \

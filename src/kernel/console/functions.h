@@ -10,3 +10,7 @@ FHDR(cmd_help);
 
 // system.c
 FHDR(cmd_meminfo);
+FHDR(cmd_sysinfo);
+
+//cmos.c
+FHDR(cmd_date);

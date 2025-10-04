@@ -32,10 +32,10 @@ void graphics_init(struct limine_framebuffer *fb)
 
     draw_logo();
 
-    print("Welcome to doccrOS ", GFX_WHITE);
-    print("v0.0.1 (alph)", GFX_WHITE);
+    print("Welcome to doccrOS \n", GFX_WHITE);
+    print("v0.0.1 (alph)\n", GFX_WHITE);
 
-    print("Graphics", GFX_WHITE);
+    print("Graphics\n", GFX_WHITE);
     char res_buf[64];
     str_copy(res_buf, "Framebuffer ");
     str_append_uint(res_buf, fb_width);

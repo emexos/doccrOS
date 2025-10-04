@@ -7,11 +7,12 @@
 FHDR(cmd_echo)
 {
     if (*s == '\0') {
-        print("", GFX_WHITE);
+        print("\n", GFX_WHITE);
         return;
     }
 
     print(s, GFX_WHITE);
+    print("\n", GFX_WHITE);
 }
 
 FHDR(cmd_clear)
@@ -50,13 +51,14 @@ FHDR(cmd_help)
 {
     if (*s == '\0') {
         // show all commands
-        print("Available commands:", GFX_CYAN);
-        print("  echo       - echo [text]", GFX_WHITE);
-        print("  clear      - clear screen", GFX_WHITE);
-        print("  help       - displays this list", GFX_WHITE);
-        print("  meminfo    - displays memory information", GFX_WHITE);
-        print("", GFX_WHITE);
-        print("Type 'help <command>' for a detail of the command", GFX_WHITE);
+        print("\nAvailable commands:\n", GFX_CYAN);
+        print("  echo       - echo [text]\n", GFX_WHITE);
+        print("  clear      - clear screen\n", GFX_WHITE);
+        print("  help       - displays this list\n", GFX_WHITE);
+        print("  meminfo    - displays memory information\n", GFX_WHITE);
+        print("  dofetch    - shows doccrOS fetch (fastfetch)\n", GFX_WHITE);
+        print("\n", GFX_WHITE);
+        print("Type 'help <command>' for a detail of the command\n", GFX_WHITE);
     } else {
         // show specific command help
         const char *p = s;
@@ -67,20 +69,20 @@ FHDR(cmd_help)
             char buf[128];
 
             print("", GFX_WHITE);
-            str_copy(buf, "Command: ");
+            str_copy(buf, "\nCommand: ");
             str_append(buf, cmd->name);
             print(buf, GFX_CYAN);
 
-            str_copy(buf, "Description: ");
+            str_copy(buf, "\nDescription: ");
             str_append(buf, cmd->description);
             print(buf, GFX_WHITE);
 
-            str_copy(buf, "Usage: ");
+            str_copy(buf, "\nUsage: ");
             str_append(buf, cmd->usage);
             print(buf, GFX_YELLOW);
-            print("", GFX_WHITE);
+            print("\n", GFX_WHITE);
         } else {
-            print("Command not found", GFX_RED);
+            print("\nCommand not found\n", GFX_RED);
         }
     }
 }

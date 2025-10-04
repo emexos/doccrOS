@@ -2,9 +2,9 @@
 #define TYPES_H
 
 typedef unsigned char u8;
-typedef unsigned short u16;
+typedef unsigned short u16, USHORT;
 typedef unsigned int u32;
-typedef unsigned long u64;
+typedef unsigned long u64, ULONG;
 
 typedef signed char i8;
 typedef signed short i16;
@@ -24,6 +24,16 @@ typedef i16 int16_t;
 typedef i32 int32_t;
 typedef i64 int64_t;
 
+/*typedef unsigned long  ULONG;
+typedef unsigned short USHORT;
+*/
+
 #define NULL ((void*)0)
+
+#define TRUE  1
+#define true  1
+
+#define FALSE 0
+#define false 0
 
 #endif

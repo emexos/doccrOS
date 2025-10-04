@@ -1,8 +1,8 @@
 #ifndef LOGO_H
 #define LOGO_H
 
-#include "../../libs/graphics/graphics.h"
-//#include "../../../shared/types.h"
+//#include "../../libs/graphics/graphics.h"
+#include "../../../shared/types.h"
 
 extern const u32 logo_width;
 extern const u32 logo_height;

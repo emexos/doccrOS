@@ -53,10 +53,50 @@ void string(const char *str, u32 color)
     }
 }
 
+void IntToString(int value, char *buffer)
+{
+    char temp[11];
+    int i = 0;
+    int isNegative = 0;
+
+    if (value < 0)
+    {
+        isNegative = 1;
+        value = -value;
+    }
+
+    do
+    {
+        temp[i++] = (value % 10) + '0';
+        value /= 10;
+    } while (value > 0);
+
+    if (isNegative)
+    {
+        temp[i++] = '-';
+    }
+
+    temp[i] = '\0';
+
+    for (int j = 0; j < i; j++)
+    {
+        buffer[j] = temp[i - j - 1];
+    }
+
+    buffer[i] = '\0';
+}
+
+void printInt(int value, u32 color)
+{
+    char buffer[12];
+    IntToString(value, buffer);
+    string(buffer, color);
+}
+
 void print(const char *str, u32 color)
 {
     string(str, color);
-    putchar('\n', color);
+    //putchar('\n', color);
 }
 
 void reset_cursor(void)

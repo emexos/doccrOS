@@ -9,15 +9,20 @@
 static char input_buffer[MAX_INPUT_LEN];
 static int input_pos = 0;
 
-// command registry
+//----------------------------------
+// ! IMPORTANT FOR NEW COMMANDS !
+static int cmd_count = 6;
+
 static console_cmd_t commands[MAX_CMDS] = {
     CMDENTRY(cmd_echo, "echo", "prints text to console", "echo [text]"),
     CMDENTRY(cmd_clear, "clear", "clears the screen", "clear [color]"),
     CMDENTRY(cmd_help, "help", "displays all available commands", "help [command]"),
     CMDENTRY(cmd_meminfo, "meminfo", "displays memory infos", "meminfo"),
+    CMDENTRY(cmd_sysinfo, "dofetch", "displays doccrOS fetch", "dofetch"),
+    CMDENTRY(cmd_date, "date", "displays the date", "date")
 };
 
-static int cmd_count = 4;
+//----------------------------------
 
 void console_init(void)
 {
@@ -114,7 +119,7 @@ void console_execute(const char *input)
     if (cmd) {
         cmd->func(args);
     } else {
-        print("Unknown command, Type 'help' for available commands...", GFX_RED);
+        print("Unknown command, Type 'help' for available commands...\n", GFX_RED);
     }
 }
 
